@@ -1,0 +1,31 @@
+fragment UserFields on User {
+  id
+  firstName
+  lastName
+  emailAddress
+  profilePicture
+}
+
+query GetAllUsers {
+  getAllUsers {
+    ...UserFields
+  }
+}
+
+query GetUser($getUserId: ID) {
+  getUser(id: $getUserId) {
+    ...UserFields
+  }
+}
+
+mutation CreateUser($input: UserCreateInput!) {
+  createUser(input: $input) {
+    ...UserFields
+  }
+}
+
+mutation UpdateUser($input: UserUpdateInput!) {
+  updateUser(input: $input) {
+    ...UserFields
+  }
+}

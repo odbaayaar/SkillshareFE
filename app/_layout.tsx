@@ -1,10 +1,17 @@
-import { Stack } from 'expo-router';
+import { RootStack } from './root-stack';
+
+import { Header } from '@/components/header';
+
+import { Providers } from '@/components/providers';
 
 const RootLayoutNav: React.FC = () => {
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
+    <>
+      <Providers>
+        <Header />
+        <RootStack />
+      </Providers>
+    </>
   );
 };
 
