@@ -22,12 +22,19 @@ export type Scalars = {
 export type Mutation = {
   __typename?: 'Mutation';
   createUser: User;
+  deleteAll: Scalars['String']['output'];
+  deleteUser: Scalars['String']['output'];
   updateUser: User;
 };
 
 
 export type MutationCreateUserArgs = {
   input: UserCreateInput;
+};
+
+
+export type MutationDeleteUserArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 
@@ -53,6 +60,8 @@ export type User = {
   id: Scalars['String']['output'];
   lastName: Scalars['String']['output'];
   profilePicture?: Maybe<Scalars['String']['output']>;
+  role: Scalars['String']['output'];
+  username: Scalars['String']['output'];
 };
 
 export type UserCreateInput = {
@@ -60,6 +69,7 @@ export type UserCreateInput = {
   firstName: Scalars['String']['input'];
   id: Scalars['String']['input'];
   lastName: Scalars['String']['input'];
+  username: Scalars['String']['input'];
 };
 
 export type UserUpdateInput = {
@@ -68,6 +78,8 @@ export type UserUpdateInput = {
   id: Scalars['String']['input'];
   lastName?: InputMaybe<Scalars['String']['input']>;
   profilePicture?: InputMaybe<Scalars['String']['input']>;
+  role?: InputMaybe<Scalars['String']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -165,6 +177,8 @@ export type ResolversParentTypes = {
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
+  deleteAll?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  deleteUser?: Resolver<ResolversTypes['String'], ParentType, ContextType, Partial<MutationDeleteUserArgs>>;
   updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
 };
 
@@ -179,6 +193,8 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   profilePicture?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  role?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

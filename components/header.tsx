@@ -1,4 +1,4 @@
-import { gql, useLazyQuery } from '@apollo/client';
+import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { useAuth, useUser } from '@clerk/clerk-expo';
 import { useEffect } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
@@ -11,6 +11,21 @@ const GET_USER = gql`
       id
       firstName
       emailAddress
+      role
+      username
+    }
+  }
+`;
+const CREATE_USER = gql`
+  mutation Mutation($input: UserCreateInput!) {
+    createUser(input: $input) {
+      id
+      firstName
+      lastName
+      emailAddress
+      profilePicture
+      role
+      username
     }
   }
 `;
@@ -21,17 +36,32 @@ export const Header: React.FC = () => {
   const [getUser, { data, loading, error }] = useLazyQuery(GET_USER, {
     variables: { id: user?.id },
   });
+  const [createUser, { data: createdData, loading: createLoading, error: createError }] =
+    useMutation(CREATE_USER);
+
   if (loading) console.log('loading...');
   if (error) console.error(error.message);
   console.log(data);
 
   useEffect(() => {
     if (user) {
-      getUser();
-    } else {
-      console.log('logged out');
+      createUser({
+        variables: {
+          input: {
+            emailAddress: user?.emailAddresses[0].emailAddress,
+            firstName: user?.firstName,
+            id: user?.id,
+            lastName: user?.lastName,
+            username: user?.username,
+          },
+        },
+      });
+      console.log(createdData, createLoading, createError);
     }
-  }, [user]);
+    if (!createLoading) {
+      getUser();
+    }
+  }, [user, createdData]);
 
   return (
     <>
@@ -48,7 +78,7 @@ export const Header: React.FC = () => {
                   backgroundColor: '#608da2',
                   display: 'flex',
                   paddingTop: 40,
-                  paddingLeft: 30,
+                  paddingLeft: 20,
                   paddingRight: 15,
                 }
               : {
@@ -72,15 +102,22 @@ export const Header: React.FC = () => {
                 borderColor: 'black',
               }}
             />
-            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+            <Text style={{ fontWeight: 'bold' }}>
               {user?.firstName} {user?.lastName}
             </Text>
           </View>
           <TouchableOpacity
             onPress={() => {
               signOut();
+            }}
+            style={data?.getUser.role === '101' ? { display: 'none' } : { marginRight: 30 }}>
+            <Text>Upload</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              signOut();
             }}>
-            <Text>Log out</Text>
+            <Text style={{ color: 'red' }}>Log out</Text>
           </TouchableOpacity>
         </View>
       )}

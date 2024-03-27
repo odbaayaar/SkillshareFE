@@ -1,6 +1,6 @@
 import { Path, Svg } from 'react-native-svg';
 
-export const CameraIcon = () => {
+export const CameraIcon = (): React.ReactNode => {
   return (
     <Svg
       style={{ position: 'absolute', marginLeft: 105 }}

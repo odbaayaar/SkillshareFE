@@ -18,6 +18,7 @@ export default function StackOneScreen(): React.ReactNode {
   const [lastName, setLastName] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
   const [pendingVerification, setPendingVerification] = useState(false);
   const [code, setCode] = useState('');
 
@@ -31,6 +32,7 @@ export default function StackOneScreen(): React.ReactNode {
       await signUp.create({
         firstName,
         lastName,
+        username,
         emailAddress,
         password,
       });
@@ -219,6 +221,19 @@ export default function StackOneScreen(): React.ReactNode {
             onChangeText={(lastName) => setLastName(lastName)}
           />
         </View>
+        <TextInput
+          style={{
+            width: 350,
+            height: 50,
+            backgroundColor: 'white',
+            borderColor: 'black',
+            borderWidth: 1,
+            marginTop: 20,
+          }}
+          placeholder="Username"
+          placeholderTextColor="gray"
+          onChangeText={(username) => setUsername(username)}
+        />
         <TextInput
           style={{
             width: 350,
